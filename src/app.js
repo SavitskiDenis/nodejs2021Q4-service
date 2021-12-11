@@ -17,13 +17,4 @@ fastify.register(boardRouter);
 fastify.register(taskRouter);
 fastify.register(userRouter);
 
-const start = async (port) => {
-  try {
-    await fastify.listen(port);
-  } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-};
-
-module.exports = start;
+module.exports = fastify;
