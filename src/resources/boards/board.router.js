@@ -1,4 +1,5 @@
 const boardsController = require('./board.controller');
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = require('../../common/http_codes');
 
 const responseBoardSchema = {
   type: 'object',
@@ -63,7 +64,7 @@ const requestBoardSchema = {
 const getAllBoardsOpts = {
   schema: {
     response: {
-      200: {
+      [CODE_OK]: {
         type: 'array',
         items: responseBoardSchema
       }
@@ -76,11 +77,11 @@ const getBoardByIdOpts = {
   schema: {
     params: requestParams,
     response: {
-      200: responseBoardSchema,
-      404: {
+      [CODE_OK]: responseBoardSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -92,8 +93,8 @@ const addBoardOpts = {
   schema: {
     body: requestBoardSchema,
     response: {
-      201: responseBoardSchema,
-      400: {
+      [CODE_CREATED]: responseBoardSchema,
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -106,11 +107,11 @@ const updateBoardOpts = {
     params: requestParams,
     body: requestBoardSchema,
     response: {
-      200: responseBoardSchema,
-      404: {
+      [CODE_OK]: responseBoardSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -122,10 +123,10 @@ const deleteBoardOpts = {
   schema: {
     params: requestParams,
     response: {
-      404: {
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }

@@ -1,4 +1,5 @@
 const tasksController = require('./task.controller');
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = require('../../common/http_codes');
 
 const responseTaskSchema = {
   type: 'object',
@@ -71,7 +72,7 @@ const getAllTasksOpts = {
   schema: {
     params: requestBoardParams,
     response: {
-      200: {
+      [CODE_OK]: {
         type: 'array',
         items: responseTaskSchema
       }
@@ -84,11 +85,11 @@ const getTaskByIdOpts = {
   schema: {
     params: requestTaskParams,
     response: {
-      200: responseTaskSchema,
-      404: {
+      [CODE_OK]: responseTaskSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -101,8 +102,8 @@ const addTaskOpts = {
     params: requestBoardParams,
     body: requestUserSchema,
     response: {
-      201: responseTaskSchema,
-      400: {
+      [CODE_CREATED]: responseTaskSchema,
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -115,11 +116,11 @@ const updateTaskOpts = {
     params: requestTaskParams,
     body: requestUserSchema,
     response: {
-      200: responseTaskSchema,
-      404: {
+      [CODE_OK]: responseTaskSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -131,10 +132,10 @@ const deleteTaskOpts = {
   schema: {
     params: requestTaskParams,
     response: {
-      404: {
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }

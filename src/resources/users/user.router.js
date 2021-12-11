@@ -1,4 +1,5 @@
 const usersController = require('./user.controller');
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = require('../../common/http_codes');
 
 const responseUserSchema = {
   type: 'object',
@@ -41,7 +42,7 @@ const requestUserSchema = {
 const getAllUsersOpts = {
   schema: {
     response: {
-      200: {
+      [CODE_OK]: {
         type: 'array',
         items: responseUserSchema
       }
@@ -54,11 +55,11 @@ const getUserByIdOpts = {
   schema: {
     params: responseParams,
     response: {
-      200: responseUserSchema,
-      404: {
+      [CODE_OK]: responseUserSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -70,11 +71,11 @@ const addUserOpts = {
   schema: {
     body: requestUserSchema,
     response: {
-      201: responseUserSchema,
-      404: {
+      [CODE_CREATED]: responseUserSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -87,11 +88,11 @@ const updateUserOpts = {
     params: responseParams,
     body: requestUserSchema,
     response: {
-      200: responseUserSchema,
-      404: {
+      [CODE_OK]: responseUserSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -103,10 +104,10 @@ const deleteUserOpts = {
   schema: {
     params: responseParams,
     response: {
-      404: {
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
