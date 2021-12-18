@@ -1,5 +1,8 @@
-const tasksController = require('./task.controller');
-const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = require('../../common/http_codes');
+import { FastifyPluginCallback } from 'fastify';
+import tasksController from './task.controller';
+import HTTP_CODES from '../../common/http_codes';
+
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
 const responseTaskSchema = {
   type: 'object',
@@ -143,7 +146,7 @@ const deleteTaskOpts = {
   handler: tasksController.deleteTask
 };
 
-const router = (fastify, _, done) => {
+const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/boards/:boardId/tasks', getAllTasksOpts);
 
   fastify.get('/boards/:boardId/tasks/:taskId', getTaskByIdOpts);
@@ -157,4 +160,4 @@ const router = (fastify, _, done) => {
   done();
 };
 
-module.exports = router;
+export default router;
