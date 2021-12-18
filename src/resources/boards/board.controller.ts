@@ -1,11 +1,20 @@
-const boardsService = require('./board.service');
-const { CODE_CREATED, CODE_NO_CONTENT, CODE_NOT_FOUND } = require('../../common/http_codes');
+import { FastifyReply, FastifyRequest } from 'fastify';
+import boardsService from './board.service';
+import { BoardPayload } from './board.types'
+import HTTP_CODES from '../../common/http_codes';
 
-const getAllBoards = (request, reply) => {
+const { CODE_CREATED, CODE_NO_CONTENT, CODE_NOT_FOUND } = HTTP_CODES;
+
+type HandlerType = (
+  request: FastifyRequest<{ Params: { boardId: string }, Body: BoardPayload }>,
+  reply: FastifyReply
+) => void;
+
+const getAllBoards: HandlerType = (_, reply) => {
   reply.send(boardsService.getAll());
 };
 
-const getBoardById = (request, reply) => {
+const getBoardById: HandlerType = (request, reply) => {
   const board = boardsService.getById(request.params.boardId);
   if (!board) {
     reply.code(CODE_NOT_FOUND);
@@ -16,13 +25,13 @@ const getBoardById = (request, reply) => {
   reply.send(board);
 };
 
-const addBoard = (request, reply) => {
+const addBoard: HandlerType = (request, reply) => {
   const board = boardsService.addBoard(request.body);
 
   reply.code(CODE_CREATED).send(board);
 };
 
-const updateBoard = (request, reply) => {
+const updateBoard: HandlerType = (request, reply) => {
   const board = boardsService.updateBoard(request.params.boardId, request.body);
   if (!board) {
     reply.code(CODE_NOT_FOUND);
@@ -33,7 +42,7 @@ const updateBoard = (request, reply) => {
   reply.send(board);
 };
 
-const deleteBoard = (request, reply) => {
+const deleteBoard: HandlerType = (request, reply) => {
   const board = boardsService.deleteBoard(request.params.boardId);
   if (!board) {
     reply.code(CODE_NOT_FOUND);
@@ -45,7 +54,7 @@ const deleteBoard = (request, reply) => {
   reply.send();
 };
 
-module.exports = {
+export default {
   getAllBoards,
   getBoardById,
   addBoard,

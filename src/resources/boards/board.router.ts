@@ -1,5 +1,8 @@
-const boardsController = require('./board.controller');
-const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = require('../../common/http_codes');
+import { FastifyPluginCallback } from 'fastify';
+import boardsController from './board.controller';
+import HTTP_CODES from '../../common/http_codes';
+
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
 const responseBoardSchema = {
   type: 'object',
@@ -134,7 +137,7 @@ const deleteBoardOpts = {
   handler: boardsController.deleteBoard
 };
 
-const router = (fastify, _, done) => {
+const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/boards', getAllBoardsOpts);
 
   fastify.get('/boards/:boardId', getBoardByIdOpts);
@@ -148,4 +151,4 @@ const router = (fastify, _, done) => {
   done();
 };
 
-module.exports = router;
+export default router;
