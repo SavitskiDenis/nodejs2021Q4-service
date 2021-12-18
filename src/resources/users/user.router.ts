@@ -1,5 +1,8 @@
-const usersController = require('./user.controller');
-const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = require('../../common/http_codes');
+import { FastifyPluginCallback } from 'fastify';
+import usersController from './user.controller';
+import HTTP_CODES from '../../common/http_codes';
+
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
 const responseUserSchema = {
   type: 'object',
@@ -115,7 +118,7 @@ const deleteUserOpts = {
   handler: usersController.deleteUser
 };
 
-const router = (fastify, _, done) => {
+const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/users', getAllUsersOpts);
 
   fastify.get('/users/:userId', getUserByIdOpts);
@@ -129,4 +132,4 @@ const router = (fastify, _, done) => {
   done();
 };
 
-module.exports = router;
+export default router;

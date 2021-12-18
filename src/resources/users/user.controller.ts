@@ -1,12 +1,21 @@
-const usersService = require('./user.service');
-const { CODE_CREATED, CODE_NO_CONTENT, CODE_NOT_FOUND } = require('../../common/http_codes');
+import { FastifyReply, FastifyRequest } from 'fastify';
+import usersService from './user.service';
+import HTTP_CODES from '../../common/http_codes';
+import  { UserPayloadType } from './user.types';
 
-const getAllUsers = (request, reply) => {
+const { CODE_CREATED, CODE_NO_CONTENT, CODE_NOT_FOUND } = HTTP_CODES;
+
+type HandlerType = (
+  request: FastifyRequest<{ Params: { userId: string }, Body: UserPayloadType }>,
+  reply: FastifyReply
+) => void;
+
+const getAllUsers: HandlerType = (_, reply) => {
   reply.send(usersService.getAll());
 };
 
-const getUserById = (request, reply) => {
-  const user = usersService.getById(request.params.userId);
+const getUserById: HandlerType = (request, reply) => {
+  const user = usersService.getById(request.params?.userId);
   if (!user) {
     reply.code(CODE_NOT_FOUND);
     reply.send(`Not found user by id ${request.params.userId}`);
@@ -16,7 +25,7 @@ const getUserById = (request, reply) => {
   reply.send(user);
 };
 
-const addUser = (request, reply) => {
+const addUser: HandlerType = (request, reply) => {
   const user = usersService.addUser(request.body);
   if (!user) {
     reply.code(CODE_NOT_FOUND);
@@ -27,7 +36,7 @@ const addUser = (request, reply) => {
   reply.code(CODE_CREATED).send(user);
 };
 
-const updateUser = (request, reply) => {
+const updateUser: HandlerType = (request, reply) => {
   const user = usersService.updateUser(request.params.userId, request.body);
   if (!user) {
     reply.code(CODE_NOT_FOUND);
@@ -38,7 +47,7 @@ const updateUser = (request, reply) => {
   reply.send(user);
 };
 
-const deleteUser = (request, reply) => {
+const deleteUser: HandlerType = (request, reply) => {
   const user = usersService.deleteUser(request.params.userId);
   if (!user) {
     reply.code(CODE_NOT_FOUND);
@@ -49,7 +58,7 @@ const deleteUser = (request, reply) => {
   reply.code(CODE_NO_CONTENT).send();
 }
 
-module.exports = {
+export default {
   getAllUsers,
   getUserById,
   addUser,
