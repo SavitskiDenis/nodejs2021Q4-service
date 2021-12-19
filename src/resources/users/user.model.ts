@@ -1,5 +1,8 @@
 import { v4 } from 'uuid';
 
+/**
+ * User model for in-memory db
+ */
 class User {
   id: string;
 
@@ -9,6 +12,14 @@ class User {
 
   password: string;
 
+  /**
+   * Create a user
+   * 
+   * @constructor
+   * @param {string} [name='USER'] User's name
+   * @param {string} [login='user'] User's login 
+   * @param {string} [password='P@55w0rd'] User's password
+   */
   constructor(
     name = 'USER',
     login = 'user',
