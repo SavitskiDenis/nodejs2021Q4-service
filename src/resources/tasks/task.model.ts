@@ -1,5 +1,8 @@
 import { v4 } from 'uuid';
 
+/**
+ * Task model for in-memory db
+ */
 class Task {
   id: string;
 
@@ -15,6 +18,17 @@ class Task {
 
   columnId: string | null;
 
+  /**
+   * Create a task
+   * 
+   * @constructor
+   * @param {string} [title='Title'] Task's title
+   * @param {string} [order=1] Task's order 
+   * @param {string} [description='Desc'] Task's description
+   * @param {string|null} [userId='P@55w0rd'] Task's userId
+   * @param {string|null} [boardId='boardId'] Task's boardId
+   * @param {string|null} [columnId='P@55w0rd'] Task's columnId
+   */
   constructor(
     title = 'Title',
     order = 1,

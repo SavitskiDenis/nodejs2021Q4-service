@@ -1,3 +1,6 @@
+/**
+ * Task payload type for request
+ */
 export type TaskPayloadType = {
   title: string;
   order: number;
