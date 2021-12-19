@@ -1,4 +1,8 @@
-const boardsController = require('./board.controller');
+import { FastifyPluginCallback } from 'fastify';
+import boardsController from './board.controller';
+import HTTP_CODES from '../../common/http_codes';
+
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
 const responseBoardSchema = {
   type: 'object',
@@ -63,7 +67,7 @@ const requestBoardSchema = {
 const getAllBoardsOpts = {
   schema: {
     response: {
-      200: {
+      [CODE_OK]: {
         type: 'array',
         items: responseBoardSchema
       }
@@ -76,11 +80,11 @@ const getBoardByIdOpts = {
   schema: {
     params: requestParams,
     response: {
-      200: responseBoardSchema,
-      404: {
+      [CODE_OK]: responseBoardSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -92,8 +96,8 @@ const addBoardOpts = {
   schema: {
     body: requestBoardSchema,
     response: {
-      201: responseBoardSchema,
-      400: {
+      [CODE_CREATED]: responseBoardSchema,
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -106,11 +110,11 @@ const updateBoardOpts = {
     params: requestParams,
     body: requestBoardSchema,
     response: {
-      200: responseBoardSchema,
-      404: {
+      [CODE_OK]: responseBoardSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -122,10 +126,10 @@ const deleteBoardOpts = {
   schema: {
     params: requestParams,
     response: {
-      404: {
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -133,7 +137,14 @@ const deleteBoardOpts = {
   handler: boardsController.deleteBoard
 };
 
-const router = (fastify, _, done) => {
+/**
+ * Boards router for fastify
+ * 
+ * @param {FastifyInstance} fastify instance of fastify
+ * @param _ Unused arg
+ * @param {Function} done done cb function
+ */
+const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/boards', getAllBoardsOpts);
 
   fastify.get('/boards/:boardId', getBoardByIdOpts);
@@ -147,4 +158,4 @@ const router = (fastify, _, done) => {
   done();
 };
 
-module.exports = router;
+export default router;

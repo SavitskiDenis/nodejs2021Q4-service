@@ -1,4 +1,8 @@
-const usersController = require('./user.controller');
+import { FastifyPluginCallback } from 'fastify';
+import usersController from './user.controller';
+import HTTP_CODES from '../../common/http_codes';
+
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
 const responseUserSchema = {
   type: 'object',
@@ -41,7 +45,7 @@ const requestUserSchema = {
 const getAllUsersOpts = {
   schema: {
     response: {
-      200: {
+      [CODE_OK]: {
         type: 'array',
         items: responseUserSchema
       }
@@ -54,11 +58,11 @@ const getUserByIdOpts = {
   schema: {
     params: responseParams,
     response: {
-      200: responseUserSchema,
-      404: {
+      [CODE_OK]: responseUserSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -70,11 +74,11 @@ const addUserOpts = {
   schema: {
     body: requestUserSchema,
     response: {
-      201: responseUserSchema,
-      404: {
+      [CODE_CREATED]: responseUserSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -87,11 +91,11 @@ const updateUserOpts = {
     params: responseParams,
     body: requestUserSchema,
     response: {
-      200: responseUserSchema,
-      404: {
+      [CODE_OK]: responseUserSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -103,10 +107,10 @@ const deleteUserOpts = {
   schema: {
     params: responseParams,
     response: {
-      404: {
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -114,7 +118,14 @@ const deleteUserOpts = {
   handler: usersController.deleteUser
 };
 
-const router = (fastify, _, done) => {
+/**
+ * Users router for fastify
+ * 
+ * @param {FastifyInstance} fastify instance of fastify
+ * @param _ Unused arg
+ * @param {Function} done done cb function
+ */
+const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/users', getAllUsersOpts);
 
   fastify.get('/users/:userId', getUserByIdOpts);
@@ -128,4 +139,4 @@ const router = (fastify, _, done) => {
   done();
 };
 
-module.exports = router;
+export default router;

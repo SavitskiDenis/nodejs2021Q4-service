@@ -1,4 +1,8 @@
-const tasksController = require('./task.controller');
+import { FastifyPluginCallback } from 'fastify';
+import tasksController from './task.controller';
+import HTTP_CODES from '../../common/http_codes';
+
+const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
 const responseTaskSchema = {
   type: 'object',
@@ -71,7 +75,7 @@ const getAllTasksOpts = {
   schema: {
     params: requestBoardParams,
     response: {
-      200: {
+      [CODE_OK]: {
         type: 'array',
         items: responseTaskSchema
       }
@@ -84,11 +88,11 @@ const getTaskByIdOpts = {
   schema: {
     params: requestTaskParams,
     response: {
-      200: responseTaskSchema,
-      404: {
+      [CODE_OK]: responseTaskSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -101,8 +105,8 @@ const addTaskOpts = {
     params: requestBoardParams,
     body: requestUserSchema,
     response: {
-      201: responseTaskSchema,
-      400: {
+      [CODE_CREATED]: responseTaskSchema,
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -115,11 +119,11 @@ const updateTaskOpts = {
     params: requestTaskParams,
     body: requestUserSchema,
     response: {
-      200: responseTaskSchema,
-      404: {
+      [CODE_OK]: responseTaskSchema,
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -131,10 +135,10 @@ const deleteTaskOpts = {
   schema: {
     params: requestTaskParams,
     response: {
-      404: {
+      [CODE_NOT_FOUND]: {
         type: 'string'
       },
-      400: {
+      [CODE_BAD_REQUEST]: {
         type: 'string'
       }
     }
@@ -142,7 +146,14 @@ const deleteTaskOpts = {
   handler: tasksController.deleteTask
 };
 
-const router = (fastify, _, done) => {
+/**
+ * Tasks router for fastify
+ * 
+ * @param {FastifyInstance} fastify instance of fastify
+ * @param _ Unused arg
+ * @param {Function} done done cb function
+ */
+const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/boards/:boardId/tasks', getAllTasksOpts);
 
   fastify.get('/boards/:boardId/tasks/:taskId', getTaskByIdOpts);
@@ -156,4 +167,4 @@ const router = (fastify, _, done) => {
   done();
 };
 
-module.exports = router;
+export default router;
