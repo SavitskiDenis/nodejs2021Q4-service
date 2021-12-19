@@ -16,13 +16,14 @@
   },
   "settings": {
     "noInlineConfig": true,
-    "import/resolver": {
-      "node": {
-        "extensions": [".ts"]
+    "import/resolver":{
+      "node":{
+        "extensions":[".js",".jsx",".ts",".tsx",".cjs"]
       }
     },
     "node": {
-      "tryExtensions": [".ts"]
+      "allowModules": ["electron"],
+      "tryExtensions": [".js", ".json", ".node",".ts",".cjs"]
     }
   },
   "plugins": [
