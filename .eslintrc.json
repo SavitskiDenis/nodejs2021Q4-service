@@ -42,6 +42,11 @@
     "node/no-unsupported-features/es-syntax": "off",
     "no-underscore-dangle": "off",
     "import/prefer-default-export": "off",
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "node/no-missing-require": ["error", {
+      "allowModules": ["electron"],
+      "resolvePaths": ["/node_modules"],
+      "tryExtensions": [".js", ".json", ".node",".ts",".cjs"]
+    }]
   }
 }
