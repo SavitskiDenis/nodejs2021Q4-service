@@ -2,7 +2,9 @@ import { v4 } from 'uuid';
 import Column from '../column/column.model'
 import { ColumnPayload } from './board.types'
 
-
+/**
+ * Board model for in-memory db
+ */
 class Board {
   id: string;
 
@@ -10,6 +12,13 @@ class Board {
 
   columns: Column[];
 
+  /**
+   * Create a board
+   * 
+   * @constructor
+   * @param {string} [title='Title'] Board's title
+   * @param {ColumnPayload} [columns=[]] Board's columns 
+   */
   constructor(
     title = 'Title',
     columns: ColumnPayload[] = []
