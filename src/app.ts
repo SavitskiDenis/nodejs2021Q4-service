@@ -14,7 +14,7 @@ const swaggerOptions: FastifyRegisterOptions<FastifyPluginOptions> = {
   mode: 'static',
   specification: {
     path: path.join(__dirname, '../doc/api.yaml')
-  },
+  }
 };
 
 app.register(swagger, swaggerOptions);
