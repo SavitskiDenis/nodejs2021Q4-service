@@ -16,8 +16,8 @@ type HandlerType = (
 /**
  * Handler function for GET /boards request
  * 
- * @param _ Unused arg
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param _ - Unused arg
+ * @param reply - instance of the standard http or http2 reply types
  */
 const getAllBoards: HandlerType = (_, reply) => {
   reply.send(boardsService.getAll());
@@ -26,8 +26,8 @@ const getAllBoards: HandlerType = (_, reply) => {
 /**
  * Handler function for GET /boards/:boardId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - instance of the standard http or http2 request objects
+ * @param reply - instance of the standard http or http2 reply types
  */
 const getBoardById: HandlerType = (request, reply) => {
   const board = boardsService.getById(request.params.boardId);
@@ -43,8 +43,8 @@ const getBoardById: HandlerType = (request, reply) => {
 /**
  * Handler function for POST /boards request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - instance of the standard http or http2 request objects
+ * @param reply - instance of the standard http or http2 reply types
  */
 const addBoard: HandlerType = (request, reply) => {
   const board = boardsService.addBoard(request.body);
@@ -55,8 +55,8 @@ const addBoard: HandlerType = (request, reply) => {
 /**
  * Handler function for PUT /boards/:boardId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - instance of the standard http or http2 request objects
+ * @param reply - instance of the standard http or http2 reply types
  */
 const updateBoard: HandlerType = (request, reply) => {
   const board = boardsService.updateBoard(request.params.boardId, request.body);
@@ -72,8 +72,8 @@ const updateBoard: HandlerType = (request, reply) => {
 /**
  * Handler function for DELETE /boards/:boardId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - instance of the standard http or http2 request objects
+ * @param reply - instance of the standard http or http2 reply types
  */
 const deleteBoard: HandlerType = (request, reply) => {
   const board = boardsService.deleteBoard(request.params.boardId);

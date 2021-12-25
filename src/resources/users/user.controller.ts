@@ -17,7 +17,7 @@ type HandlerType = (
  * Handler function for GET /users request
  * 
  * @param _ Unused arg
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const getAllUsers: HandlerType = (_, reply) => {
   reply.send(usersService.getAll());
@@ -26,8 +26,8 @@ const getAllUsers: HandlerType = (_, reply) => {
 /**
  * Handler function for GET /users/:userId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const getUserById: HandlerType = (request, reply) => {
   const user = usersService.getById(request.params?.userId);
@@ -43,8 +43,8 @@ const getUserById: HandlerType = (request, reply) => {
 /**
  * Handler function for POST /users request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const addUser: HandlerType = (request, reply) => {
   const user = usersService.addUser(request.body);
@@ -60,8 +60,8 @@ const addUser: HandlerType = (request, reply) => {
 /**
  * Handler function for PUT /users/:userId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const updateUser: HandlerType = (request, reply) => {
   const user = usersService.updateUser(request.params.userId, request.body);
@@ -77,8 +77,8 @@ const updateUser: HandlerType = (request, reply) => {
 /**
  * Handler function for DELETE /users/:userId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const deleteUser: HandlerType = (request, reply) => {
   const user = usersService.deleteUser(request.params.userId);

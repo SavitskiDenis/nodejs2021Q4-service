@@ -13,9 +13,11 @@ class Column {
   /**
    * Create a column
    * 
-   * @constructor
-   * @param {string} [title='Title'] Column's title
-   * @param {ColumnPayload} [order=0] Column's order 
+   * @param title - Column's title
+   * @defaultValue 'Title'
+   * 
+   * @param order - Column's order
+   * @defaultValue 0 
    */
   constructor(title = 'Title', order = 0) {
     this.id = v4();

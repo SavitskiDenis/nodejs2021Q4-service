@@ -15,9 +15,11 @@ class Board {
   /**
    * Create a board
    * 
-   * @constructor
-   * @param {string} [title='Title'] Board's title
-   * @param {ColumnPayload} [columns=[]] Board's columns 
+   * @param title - Board's title
+   * @defaultValue Title
+   * 
+   * @param columns - Board's columns
+   * @defaultValue []
    */
   constructor(
     title = 'Title',

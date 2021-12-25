@@ -24,8 +24,8 @@ type HandlerBoardAndTask = (
 /**
  * Handler function for GET /boards/:boardId/tasks request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const getAllTasks: HandlerBoard = (request, reply) => {
   reply.send(tasksService.getAll(request.params.boardId));
@@ -34,8 +34,8 @@ const getAllTasks: HandlerBoard = (request, reply) => {
 /**
  * Handler function for GET /boards/:boardId/tasks/:taskId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const getTaskById: HandlerBoardAndTask = (request, reply) => {
   const task = tasksService.getById(request.params.taskId, request.params.boardId);
@@ -51,8 +51,8 @@ const getTaskById: HandlerBoardAndTask = (request, reply) => {
 /**
  * Handler function for POST /boards/:boardId/tasks request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const addTask: HandlerBoard = (request, reply) => {
   const task = tasksService.addTask(request.params.boardId, request.body);
@@ -63,8 +63,8 @@ const addTask: HandlerBoard = (request, reply) => {
 /**
  * Handler function for PUT /boards/:boardId/tasks/:taskId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const updateTask: HandlerBoardAndTask = (request, reply) => {
   const task = tasksService.updateTask(request.params.taskId, request.params.boardId, request.body);
@@ -80,8 +80,8 @@ const updateTask: HandlerBoardAndTask = (request, reply) => {
 /**
  * Handler function for DELETE /boards/:boardId/tasks/:taskId request
  * 
- * @param {FastifyRequest} request instance of the standard http or http2 request objects
- * @param {FastifyReply} reply instance of the standard http or http2 reply types
+ * @param request - Instance of the standard http or http2 request objects
+ * @param reply - Instance of the standard http or http2 reply types
  */
 const deleteTask: HandlerBoardAndTask = (request, reply) => {
   const task = tasksService.deleteTask(request.params.taskId, request.params.boardId);
