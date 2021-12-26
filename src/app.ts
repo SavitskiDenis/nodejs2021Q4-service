@@ -2,9 +2,9 @@ import { FastifyInstance, fastify, FastifyRegisterOptions, FastifyPluginOptions,
 import { Server, IncomingMessage, ServerResponse } from "http";
 import path from 'path';
 import swagger from 'fastify-swagger';
-import HTTP_CODES from './common/http_codes';
 import NotFoundError from './errors/NotFoundError';
 import logger from './common/logger';
+import customErrorHandler from './errors/CustomErrorHandler';
 import userRouter from './resources/users/user.router';
 import taskRouter from './resources/tasks/task.router';
 import boardRouter from './resources/boards/board.router';
@@ -37,25 +37,7 @@ app.setNotFoundHandler((request) => {
   throw new NotFoundError(`Not found ${request.method} ${request.url}`);
 });
 
-app.setErrorHandler((error, _, reply) => {
-  let code = HTTP_CODES.CODE_INTERNAL_SERVER_ERROR;
-  const msg = error.message;
-
-  if (error.validation) {
-    code = 400;
-    logger.warn(error);
-  } else if (error.statusCode !== undefined) {
-    code = error.statusCode;
-  }
-
-  if (code >= 500) {
-    logger.error(error);
-  } else {
-    logger.warn(error);
-  }
-
-  reply.status(code).send(msg);
-});
+app.setErrorHandler(customErrorHandler);
 
 process.on('uncaughtException', (error) => {
   logger.error(error);
