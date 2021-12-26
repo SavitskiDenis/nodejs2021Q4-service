@@ -140,9 +140,9 @@ const deleteBoardOpts = {
 /**
  * Boards router for fastify
  * 
- * @param {FastifyInstance} fastify instance of fastify
- * @param _ Unused arg
- * @param {Function} done done cb function
+ * @param fastify - instance of fastify
+ * @param _ - Unused arg
+ * @param done - Done cb function
  */
 const router: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get('/boards', getAllBoardsOpts);

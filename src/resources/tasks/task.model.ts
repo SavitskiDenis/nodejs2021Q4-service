@@ -21,13 +21,23 @@ class Task {
   /**
    * Create a task
    * 
-   * @constructor
-   * @param {string} [title='Title'] Task's title
-   * @param {string} [order=1] Task's order 
-   * @param {string} [description='Desc'] Task's description
-   * @param {string|null} [userId='P@55w0rd'] Task's userId
-   * @param {string|null} [boardId='boardId'] Task's boardId
-   * @param {string|null} [columnId='P@55w0rd'] Task's columnId
+   * @param title - Task's title
+   * @defaultValue 'Title'
+   * 
+   * @param order - Task's order
+   * @defaultValue 1
+   * 
+   * @param description - Task's description
+   * @defaultValue 'Desc'
+   * 
+   * @param userId - Task's userId
+   * @defaultValue null
+   * 
+   * @param boardId - Task's boardId
+   * @defaultValue 'boardId'
+   * 
+   * @param columnId - Task's columnId
+   * @defaultValue 'P@55w0rd'
    */
   constructor(
     title = 'Title',

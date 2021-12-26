@@ -15,10 +15,14 @@ class User {
   /**
    * Create a user
    * 
-   * @constructor
-   * @param {string} [name='USER'] User's name
-   * @param {string} [login='user'] User's login 
-   * @param {string} [password='P@55w0rd'] User's password
+   * @param name - User's name
+   * @defaultValue 'USER'
+   * 
+   * @param login - User's login
+   * @defaultValue 'user'
+   * 
+   * @param password - User's password
+   * @defaultValue 'P@55w0rd'
    */
   constructor(
     name = 'USER',

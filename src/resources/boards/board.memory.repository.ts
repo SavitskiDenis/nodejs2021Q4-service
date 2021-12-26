@@ -6,23 +6,23 @@ const boards: Board[] = [];
 /**
  * Function for getting all boards
  * 
- * @returns {Board[]} Array of boards
+ * @returns Array of boards
  */
 const getAll = (): Board[] => boards;
 
 /**
  * Function for getting board by id
  * 
- * @param {string} id Board's uuid 
- * @returns {Board | undefined} Found board or undefined
+ * @param id - Board's uuid 
+ * @returns Found board or undefined
  */
 const getById = (id: string): Board | undefined => boards.find(el => el.id === id);
 
 /**
  * Function for create and add new board in array
  * 
- * @param {BoardPayload} payload Data for new board
- * @returns {Board} Created board
+ * @param payload - Data for new board
+ * @returns Created board
  */
 const add = (payload: BoardPayload): Board => {
   const board = new Board(payload.title, payload.columns);
@@ -34,9 +34,9 @@ const add = (payload: BoardPayload): Board => {
 /**
  * Function for update board by id
  * 
- * @param {string} id Board's uuid 
- * @param {BoardPayload} payload Data for update board
- * @returns {Board | null} Updated board or null
+ * @param id - Board's uuid 
+ * @param payload - Data for update board
+ * @returns Updated board or null
  */
 const update = (id: string, payload: BoardPayload): Board | null => {
   const board = boards.find(el => el.id === id);
@@ -59,8 +59,8 @@ const update = (id: string, payload: BoardPayload): Board | null => {
 /**
  * Function for delete board from array by id
  * 
- * @param {string} id Board's uuid
- * @returns {Board|null} Deleted board or null
+ * @param id - Board's uuid
+ * @returns Deleted board or null
  */
 const _delete = (id: string): Board | null => {
   const boardIndex = boards.findIndex(el => el.id === id);
