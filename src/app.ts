@@ -38,7 +38,7 @@ app.setNotFoundHandler((request) => {
 });
 
 app.setErrorHandler((error, _, reply) => {
-  let code = HTTP_CODES.INTERNAL_SERVER_ERROR;
+  let code = HTTP_CODES.CODE_INTERNAL_SERVER_ERROR;
   const msg = error.message;
 
   if (error.validation) {
