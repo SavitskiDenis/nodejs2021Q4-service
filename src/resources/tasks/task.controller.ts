@@ -2,8 +2,9 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import tasksService from './task.service';
 import HTTP_CODES from '../../common/http_codes';
 import { TaskPayloadType } from './task.types';
+import NotFoundError from '../../errors/NotFoundError';
 
-const { CODE_CREATED, CODE_NO_CONTENT, CODE_NOT_FOUND } = HTTP_CODES;
+const { CODE_CREATED, CODE_NO_CONTENT } = HTTP_CODES;
 
 /**
  * Fastify handler type for tasks with boardId param
@@ -40,9 +41,7 @@ const getAllTasks: HandlerBoard = (request, reply) => {
 const getTaskById: HandlerBoardAndTask = (request, reply) => {
   const task = tasksService.getById(request.params.taskId, request.params.boardId);
   if (!task) {
-    reply.code(CODE_NOT_FOUND);
-    reply.send(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
-    return;
+    throw new NotFoundError(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
   }
 
   reply.send(task);
@@ -69,9 +68,7 @@ const addTask: HandlerBoard = (request, reply) => {
 const updateTask: HandlerBoardAndTask = (request, reply) => {
   const task = tasksService.updateTask(request.params.taskId, request.params.boardId, request.body);
   if (!task) {
-    reply.code(CODE_NOT_FOUND);
-    reply.send(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
-    return;
+    throw new NotFoundError(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
   }
 
   reply.send(task);
@@ -86,9 +83,7 @@ const updateTask: HandlerBoardAndTask = (request, reply) => {
 const deleteTask: HandlerBoardAndTask = (request, reply) => {
   const task = tasksService.deleteTask(request.params.taskId, request.params.boardId);
   if (!task) {
-    reply.code(CODE_NOT_FOUND);
-    reply.send(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
-    return;
+    throw new NotFoundError(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
   }
 
   reply.code(CODE_NO_CONTENT).send();
