@@ -7,6 +7,7 @@ dotenv.config({
 
 export default {
   PORT: process.env.PORT ?? '8888',
+  ADDRESS: process.env.ADDRESS ?? 'localhost',
   LOG_LEVEL: process.env.LOG_LEVEL,
   LOGS_DIR_PATH: path.join(__dirname, '../../logs'),
   LOGGER_TRANSLATE_TIME_FORMAT: 'yyyy-mm-dd HH:MM:ss',
