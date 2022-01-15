@@ -2,7 +2,7 @@ FROM node:16-alpine
 
 EXPOSE ${PORT}
 
-WORKDIR /user/app/src
+WORKDIR /user/app
 
 COPY package.json .
 
