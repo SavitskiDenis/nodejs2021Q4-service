@@ -25,12 +25,13 @@ services:
       - db
     volumes:
       - /user/app/src/node_modules
-      - .:/user/app/src
-      - ${LOGS_VOLUME_PATH}:/user/app/src/logs
+      - ./src:/user/app/src
+      - logs:/user/app/src/logs
     networks:
       - custom-newtork
 volumes:
   postgres_volume:
+  logs:
 networks:
   custom-newtork:
     driver: bridge
