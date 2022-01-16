@@ -5,7 +5,10 @@
         "noImplicitAny": true,
         "esModuleInterop": true,
         "removeComments": true,
-        "strict": true
+        "strict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictPropertyInitialization": false
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
