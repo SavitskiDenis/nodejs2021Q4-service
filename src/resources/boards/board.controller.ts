@@ -12,7 +12,7 @@ const { CODE_CREATED, CODE_NO_CONTENT } = HTTP_CODES;
 type HandlerType = (
   request: FastifyRequest<{ Params: { boardId: string }, Body: BoardPayload }>,
   reply: FastifyReply
-) => void;
+) => Promise<void>;
 
 /**
  * Handler function for GET /boards request
@@ -20,8 +20,8 @@ type HandlerType = (
  * @param _ - Unused arg
  * @param reply - instance of the standard http or http2 reply types
  */
-const getAllBoards: HandlerType = (_, reply) => {
-  reply.send(boardsService.getAll());
+const getAllBoards: HandlerType = async (_, reply) => {
+  reply.send(await boardsService.getAll());
 };
 
 /**
@@ -30,8 +30,8 @@ const getAllBoards: HandlerType = (_, reply) => {
  * @param request - instance of the standard http or http2 request objects
  * @param reply - instance of the standard http or http2 reply types
  */
-const getBoardById: HandlerType = (request, reply) => {
-  const board = boardsService.getById(request.params.boardId);
+const getBoardById: HandlerType = async (request, reply) => {
+  const board = await boardsService.getById(request.params.boardId);
   if (!board) {
     throw new NotFoundError(`Not found board by id ${request.params.boardId}`);
   }
@@ -45,8 +45,8 @@ const getBoardById: HandlerType = (request, reply) => {
  * @param request - instance of the standard http or http2 request objects
  * @param reply - instance of the standard http or http2 reply types
  */
-const addBoard: HandlerType = (request, reply) => {
-  const board = boardsService.addBoard(request.body);
+const addBoard: HandlerType = async (request, reply) => {
+  const board = await boardsService.addBoard(request.body);
 
   reply.code(CODE_CREATED).send(board);
 };
@@ -57,8 +57,8 @@ const addBoard: HandlerType = (request, reply) => {
  * @param request - instance of the standard http or http2 request objects
  * @param reply - instance of the standard http or http2 reply types
  */
-const updateBoard: HandlerType = (request, reply) => {
-  const board = boardsService.updateBoard(request.params.boardId, request.body);
+const updateBoard: HandlerType = async (request, reply) => {
+  const board = await boardsService.updateBoard(request.params.boardId, request.body);
   if (!board) {
     throw new NotFoundError(`Not found board by id ${request.params.boardId}`);
   }
@@ -72,8 +72,8 @@ const updateBoard: HandlerType = (request, reply) => {
  * @param request - instance of the standard http or http2 request objects
  * @param reply - instance of the standard http or http2 reply types
  */
-const deleteBoard: HandlerType = (request, reply) => {
-  const board = boardsService.deleteBoard(request.params.boardId);
+const deleteBoard: HandlerType = async (request, reply) => {
+  const board = await boardsService.deleteBoard(request.params.boardId);
   if (!board) {
     throw new NotFoundError(`Not found board by id ${request.params.boardId}`);
   }

@@ -1,5 +1,3 @@
-import { v4 } from 'uuid';
-
 /**
  * Task model for in-memory db
  */
@@ -40,6 +38,7 @@ class Task {
    * @defaultValue 'P@55w0rd'
    */
   constructor(
+    id: string,
     title = 'Title',
     order = 1,
     description = 'Desc',
@@ -47,7 +46,7 @@ class Task {
     boardId:string | null = 'boardId',
     columnId: string | null = null
   ) {
-    this.id = v4();
+    this.id = id;
     this.title = title;
     this.order = order;
     this.description = description;

@@ -12,7 +12,7 @@ const { CODE_CREATED, CODE_NO_CONTENT } = HTTP_CODES;
 type HandlerBoard = (
   request: FastifyRequest<{ Params: { boardId: string }, Body: TaskPayloadType }>,
   reply: FastifyReply
-) => void;
+) => Promise<void>;
 
 /**
  * Fastify handler type for tasks with boardId and taskId params
@@ -28,8 +28,9 @@ type HandlerBoardAndTask = (
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const getAllTasks: HandlerBoard = (request, reply) => {
-  reply.send(tasksService.getAll(request.params.boardId));
+const getAllTasks: HandlerBoard = async (request, reply) => {
+  const result = await tasksService.getAll(request.params.boardId);
+  reply.send(result);
 };
 
 /**
@@ -38,8 +39,8 @@ const getAllTasks: HandlerBoard = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const getTaskById: HandlerBoardAndTask = (request, reply) => {
-  const task = tasksService.getById(request.params.taskId, request.params.boardId);
+const getTaskById: HandlerBoardAndTask = async (request, reply) => {
+  const task = await tasksService.getById(request.params.taskId, request.params.boardId);
   if (!task) {
     throw new NotFoundError(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
   }
@@ -53,8 +54,8 @@ const getTaskById: HandlerBoardAndTask = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const addTask: HandlerBoard = (request, reply) => {
-  const task = tasksService.addTask(request.params.boardId, request.body);
+const addTask: HandlerBoard = async (request, reply) => {
+  const task = await tasksService.addTask(request.params.boardId, request.body);
 
   reply.code(CODE_CREATED).send(task);
 };
@@ -65,8 +66,8 @@ const addTask: HandlerBoard = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const updateTask: HandlerBoardAndTask = (request, reply) => {
-  const task = tasksService.updateTask(request.params.taskId, request.params.boardId, request.body);
+const updateTask: HandlerBoardAndTask = async (request, reply) => {
+  const task = await tasksService.updateTask(request.params.taskId, request.params.boardId, request.body);
   if (!task) {
     throw new NotFoundError(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
   }
@@ -80,8 +81,8 @@ const updateTask: HandlerBoardAndTask = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const deleteTask: HandlerBoardAndTask = (request, reply) => {
-  const task = tasksService.deleteTask(request.params.taskId, request.params.boardId);
+const deleteTask: HandlerBoardAndTask = async (request, reply) => {
+  const task = await tasksService.deleteTask(request.params.taskId, request.params.boardId);
   if (!task) {
     throw new NotFoundError(`Not found task by id ${request.params.taskId} and board id ${request.params.boardId}`);
   }
