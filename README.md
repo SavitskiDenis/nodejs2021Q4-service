@@ -11,19 +11,42 @@
 git clone {repository URL}
 ```
 
-## Installing NPM modules
+
+## Running application on local machine
+
+Install modules
 
 ```
 npm install
 ```
 
-## Running application
+Set envirement variables in .env
+```
+TYPEORM_HOST=your value
+TYPEORM_PORT=your value
+TYPEORM_DATABASE=your value
+TYPEORM_USERNAME=your value
+TYPEORM_PASSWORD=your value
+```
+
+After configuration
 
 ```
 npm start
 ```
 
 ## Running application via docker-compose
+
+Set this values for envirement variables in .env
+```
+TYPEORM_HOST=db
+TYPEORM_PORT=5432
+TYPEORM_DATABASE=postgres
+TYPEORM_USERNAME=postgres
+TYPEORM_PASSWORD=postgres
+```
+
+After configuration
 
 ```
 docker-compose up
