@@ -11,7 +11,8 @@ import App from './app';
  */
 const start = async (port: string, address: string): Promise<void> => {
   try {
-    await createConnection();
+    const connection = await createConnection();
+    await connection.runMigrations();
     await App.listen(port, address);
   } catch (err) {
     App.log.error(err)
