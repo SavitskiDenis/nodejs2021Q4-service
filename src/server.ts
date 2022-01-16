@@ -1,5 +1,6 @@
+import { createConnection } from 'typeorm';
 import Config from './common/config';
-import App from './app'
+import App from './app';
 
 /**
  * Function for start fastify server
@@ -10,6 +11,7 @@ import App from './app'
  */
 const start = async (port: string, address: string): Promise<void> => {
   try {
+    await createConnection();
     await App.listen(port, address);
   } catch (err) {
     App.log.error(err)
