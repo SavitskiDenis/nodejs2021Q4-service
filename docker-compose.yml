@@ -24,7 +24,6 @@ services:
     depends_on:
       - db
     volumes:
-      - /user/app/src/node_modules
       - ./src:/user/app/src
       - logs:/user/app/src/logs
     networks:
