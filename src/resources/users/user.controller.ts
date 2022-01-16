@@ -12,7 +12,7 @@ const { CODE_CREATED, CODE_NO_CONTENT } = HTTP_CODES;
 type HandlerType = (
   request: FastifyRequest<{ Params: { userId: string }, Body: UserPayloadType }>,
   reply: FastifyReply
-) => void;
+) => Promise<void>;
 
 /**
  * Handler function for GET /users request
@@ -20,8 +20,8 @@ type HandlerType = (
  * @param _ Unused arg
  * @param reply - Instance of the standard http or http2 reply types
  */
-const getAllUsers: HandlerType = (_, reply) => {
-  reply.send(usersService.getAll());
+const getAllUsers: HandlerType =  async (_, reply) => {
+  reply.send(await usersService.getAll());
 };
 
 /**
@@ -30,8 +30,8 @@ const getAllUsers: HandlerType = (_, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const getUserById: HandlerType = (request, reply) => {
-  const user = usersService.getById(request.params?.userId);
+const getUserById: HandlerType = async (request, reply) => {
+  const user = await usersService.getById(request.params?.userId);
   if (!user) {
     throw new NotFoundError(`Not found user by id ${request.params.userId}`);
   }
@@ -45,8 +45,8 @@ const getUserById: HandlerType = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const addUser: HandlerType = (request, reply) => {
-  const user = usersService.addUser(request.body);
+const addUser: HandlerType = async (request, reply) => {
+  const user = await usersService.addUser(request.body);
   if (!user) {
     throw new NotFoundError(`Not found user by id ${request.params.userId}`);
   }
@@ -60,8 +60,8 @@ const addUser: HandlerType = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const updateUser: HandlerType = (request, reply) => {
-  const user = usersService.updateUser(request.params.userId, request.body);
+const updateUser: HandlerType = async (request, reply) => {
+  const user = await usersService.updateUser(request.params.userId, request.body);
   if (!user) {
     throw new NotFoundError(`Not found user by id ${request.params.userId}`);
   }
@@ -75,8 +75,8 @@ const updateUser: HandlerType = (request, reply) => {
  * @param request - Instance of the standard http or http2 request objects
  * @param reply - Instance of the standard http or http2 reply types
  */
-const deleteUser: HandlerType = (request, reply) => {
-  const user = usersService.deleteUser(request.params.userId);
+const deleteUser: HandlerType = async (request, reply) => {
+  const user = await usersService.deleteUser(request.params.userId);
   if (!user) {
     throw new NotFoundError(`Not found user by id ${request.params.userId}`);
   }

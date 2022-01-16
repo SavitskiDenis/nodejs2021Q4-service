@@ -1,6 +1,5 @@
-import usersRepo from './user.memory.repository';
-import User from './user.model';
-import tasksService from '../tasks/task.service';
+import usersRepo from './user.repository';
+import User from './user.entity';
 import  { UserPayloadType } from './user.types';
 
 /**
@@ -8,7 +7,7 @@ import  { UserPayloadType } from './user.types';
  * 
  * @returns Array of users
  */
-const getAll = (): User[] => usersRepo.getAll();
+const getAll = (): Promise<User[]> => usersRepo.getAll();
 
 /**
  * Function for getting user by id from in-memory db
@@ -16,7 +15,7 @@ const getAll = (): User[] => usersRepo.getAll();
  * @param id - User's uuid 
  * @returns Found user or undefined
  */
-const getById = (id: string): User | undefined => usersRepo.getById(id);
+const getById = (id: string): Promise<User | undefined> => usersRepo.getById(id);
 
 /**
  * Function for add new user in in-memory db and get it
@@ -24,7 +23,7 @@ const getById = (id: string): User | undefined => usersRepo.getById(id);
  * @param payload - Data for new user
  * @returns Created user
  */
-const addUser = (payload: UserPayloadType): User => usersRepo.add(payload);
+const addUser = (payload: UserPayloadType): Promise<User> => usersRepo.add(payload);
 
 /**
  * Function for update user by id in in-memory db and get it
@@ -33,7 +32,7 @@ const addUser = (payload: UserPayloadType): User => usersRepo.add(payload);
  * @param payload - Data for update user
  * @returns Updated user
  */
-const updateUser = (id: string, payload: UserPayloadType): User | null => usersRepo.update(id, payload);
+const updateUser = (id: string, payload: UserPayloadType): Promise<User | null> => usersRepo.update(id, payload);
 
 /**
  * Function for delete user by id from in-memeory db and get it
@@ -41,9 +40,6 @@ const updateUser = (id: string, payload: UserPayloadType): User | null => usersR
  * @param id - User's uuid 
  * @returns Deleted user
  */
-const deleteUser = (id: string): User | null => {
-  tasksService.deleteTasksFromUser(id);
-  return usersRepo._delete(id);
-}
+const deleteUser = (id: string): Promise<User | null> => usersRepo._delete(id);
 
 export default { getAll, getById, addUser, updateUser, deleteUser };
