@@ -1,8 +1,10 @@
-FROM node:16-alpine
+FROM alpine:3.15
 
 EXPOSE ${PORT}
 
 WORKDIR /user/app
+
+RUN apk --no-cache add nodejs npm
 
 COPY package.json .
 
