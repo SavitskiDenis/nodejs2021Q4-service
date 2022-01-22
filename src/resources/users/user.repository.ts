@@ -17,6 +17,14 @@ const getAll =  (): Promise<User[]> => User.find();
 const getById = (id: string): Promise<User | undefined> => User.findOne(id);
 
 /**
+ * Function for getting users by login
+ * 
+ * @param id - User's uuid 
+ * @returns Founded users or undefined
+ */
+const getByLogin = (login: string): Promise<User[] | undefined> => User.find({ where: { login } });
+
+/**
  * Function for create and add new user in db
  * 
  * @param payload - Data for new user
@@ -70,4 +78,4 @@ const _delete = async (id: string): Promise<User | null> => {
   return null;
 };
 
-export default { getAll, getById, add, update, _delete };
+export default { getAll, getById, getByLogin, add, update, _delete };

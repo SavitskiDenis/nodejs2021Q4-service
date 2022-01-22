@@ -20,6 +20,14 @@ const getAll = (): Promise<User[]> => usersRepo.getAll();
 const getById = (id: string): Promise<User | undefined> => usersRepo.getById(id);
 
 /**
+ * Function for getting users by login from db
+ * 
+ * @param login - User's login
+ * @returns Found users or undefined
+ */
+const getByLogin = (login: string): Promise<User[] | undefined> => usersRepo.getByLogin(login);
+
+/**
  * Function for add new user in in-memory db and get it
  * 
  * @param payload - Data for new user
@@ -54,4 +62,4 @@ const updateUser = async (id: string, payload: UserPayloadType): Promise<User | 
  */
 const deleteUser = (id: string): Promise<User | null> => usersRepo._delete(id);
 
-export default { getAll, getById, addUser, updateUser, deleteUser };
+export default { getAll, getById, getByLogin, addUser, updateUser, deleteUser };
