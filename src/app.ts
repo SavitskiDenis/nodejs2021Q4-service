@@ -5,6 +5,8 @@ import swagger from 'fastify-swagger';
 import NotFoundError from './errors/NotFoundError';
 import logger from './common/logger';
 import customErrorHandler from './errors/CustomErrorHandler';
+
+import loginRouter from './resources/login/login.router';
 import userRouter from './resources/users/user.router';
 import taskRouter from './resources/tasks/task.router';
 import boardRouter from './resources/boards/board.router';
@@ -29,6 +31,7 @@ app.addHook('preValidation', (req, _, done) => {
   done();
 });
 
+app.register(loginRouter);
 app.register(boardRouter);
 app.register(taskRouter);
 app.register(userRouter);
