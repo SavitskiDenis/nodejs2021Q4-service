@@ -1,4 +1,3 @@
-import { getConnection } from 'typeorm';
 import Board from './board.entity';
 import Column from '../column/column.entity'
 import { BoardPayload } from './board.types'
