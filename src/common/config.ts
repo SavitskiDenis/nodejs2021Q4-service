@@ -14,6 +14,6 @@ export default {
   NODE_ENV: process.env.NODE_ENV,
   MONGO_CONNECTION_STRING: process.env.MONGO_CONNECTION_STRING,
   SALT_ROUNDS: process.env.SALT_ROUNDS ? Number.parseInt(process.env.SALT_ROUNDS, 10) : 10,
-  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ?? 'secret',
   AUTH_MODE: process.env.AUTH_MODE === 'true'
 };
