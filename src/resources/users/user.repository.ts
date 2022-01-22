@@ -1,4 +1,3 @@
-import { getConnection } from 'typeorm';
 import User from './user.entity';
 import  { UserPayloadType } from './user.types';
 
@@ -7,7 +6,7 @@ import  { UserPayloadType } from './user.types';
  * 
  * @returns Array of users
  */
-const getAll =  (): Promise<User[]> => getConnection().manager.find(User);
+const getAll =  (): Promise<User[]> => User.find();
 
 /**
  * Function for getting user by id
@@ -15,7 +14,7 @@ const getAll =  (): Promise<User[]> => getConnection().manager.find(User);
  * @param id - User's uuid 
  * @returns Found user or undefined
  */
-const getById = (id: string): Promise<User | undefined> => getConnection().manager.findOne(User, id);
+const getById = (id: string): Promise<User | undefined> => User.findOne(id);
 
 /**
  * Function for create and add new user in db
@@ -24,9 +23,8 @@ const getById = (id: string): Promise<User | undefined> => getConnection().manag
  * @returns Created user
  */
 const add = async (payload: UserPayloadType): Promise<User> => {
-  const connection = getConnection();
-  const user = await connection.manager.create(User, payload);
-  await connection.manager.save(user);
+  const user = await User.create(payload);
+  await user.save();
 
   return user;
 };
@@ -39,15 +37,14 @@ const add = async (payload: UserPayloadType): Promise<User> => {
  * @returns Updated user or null
  */
 const update = async (id: string, payload: UserPayloadType): Promise<User | null> => {
-  const connection = getConnection();
-  const user = await connection.manager.findOne(User, id);
+  const user = await getById(id);
 
   if (user) {
     user.name = payload.name;
     user.login = payload.login;
     user.password = payload.password;
 
-    await connection.manager.save(user);
+    await user.save();
 
     return user;
   }
@@ -62,11 +59,10 @@ const update = async (id: string, payload: UserPayloadType): Promise<User | null
  * @returns Deleted user or null
  */
 const _delete = async (id: string): Promise<User | null> => {
-  const connection = getConnection();
-  const user = await connection.manager.findOne(User, id);
+  const user = await getById(id);
 
   if (user) {
-    await connection.manager.remove(user);
+    await user.remove();
 
     return user;
   }

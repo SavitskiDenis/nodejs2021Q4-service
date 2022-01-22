@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryColumn, OneToMany, BaseEntity } from 'typeorm';
 import { v4 } from 'uuid';
 import Task from '../tasks/task.entity';
 
@@ -6,7 +6,7 @@ import Task from '../tasks/task.entity';
  * User entity for db
  */
 @Entity('users')
-class User {
+class User extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
