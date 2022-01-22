@@ -1,3 +1,5 @@
+import { genSalt, hash } from 'bcrypt';
+import Config from '../../common/config';
 import usersRepo from './user.repository';
 import User from './user.entity';
 import  { UserPayloadType } from './user.types';
@@ -23,7 +25,12 @@ const getById = (id: string): Promise<User | undefined> => usersRepo.getById(id)
  * @param payload - Data for new user
  * @returns Created user
  */
-const addUser = (payload: UserPayloadType): Promise<User> => usersRepo.add(payload);
+const addUser = async (payload: UserPayloadType): Promise<User> => {
+    const salt = await genSalt(Config.SALT_ROUNDS);
+    const password = await hash(payload.password, salt);
+
+    return usersRepo.add({ ...payload, salt, password });
+};
 
 /**
  * Function for update user by id in in-memory db and get it
@@ -32,7 +39,12 @@ const addUser = (payload: UserPayloadType): Promise<User> => usersRepo.add(paylo
  * @param payload - Data for update user
  * @returns Updated user
  */
-const updateUser = (id: string, payload: UserPayloadType): Promise<User | null> => usersRepo.update(id, payload);
+const updateUser = async (id: string, payload: UserPayloadType): Promise<User | null> => {
+    const salt = await genSalt(Config.SALT_ROUNDS);
+    const password = await hash(payload.password, salt);
+
+    return usersRepo.update(id, { ...payload, salt, password });
+};
 
 /**
  * Function for delete user by id from in-memeory db and get it
