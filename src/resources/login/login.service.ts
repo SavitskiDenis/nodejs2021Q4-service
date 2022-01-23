@@ -13,7 +13,7 @@ import { createToken } from '../../common/authentification';
 const login = async (payload: LoginPayloadType): Promise<string | null> => {
   const users = await userService.getByLogin(payload.login);
 
-  if (Array.isArray(users)) {
+  if (Array.isArray(users) && users.length > 0) {
     const match = await compare(payload.password, users[0].password);
 
     if (match) {
