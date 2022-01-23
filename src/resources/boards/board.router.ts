@@ -1,4 +1,4 @@
-import { FastifyPluginCallback, FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyPluginCallback } from 'fastify';
 import boardsController from './board.controller';
 import HTTP_CODES from '../../common/http_codes';
 import { authHook } from '../../common/authentification';
