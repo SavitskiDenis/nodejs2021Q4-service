@@ -3,7 +3,6 @@ import loginService from './login.service';
 import HTTP_CODES from '../../common/http_codes';
 import { LoginPayloadType } from './login.types';
 import ForbiddenError from '../../errors/ForbiddenError';
-import config from '../../common/config';
 
 const { CODE_OK } = HTTP_CODES;
 
