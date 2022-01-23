@@ -4,7 +4,7 @@ import UnauthorizedError from '../errors/UnauthorizedError';
 import config from './config';
 
 export function createToken (id: string, login: string): string {
-  return sign({ id, login }, config.JWT_SECRET_KEY)
+  return sign({ userId: id, login }, config.JWT_SECRET_KEY)
 }
 
 export function authHook (req: FastifyRequest, reply: FastifyReply, done: () => void) {
