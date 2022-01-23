@@ -1,6 +1,7 @@
 import { FastifyPluginCallback } from 'fastify';
 import tasksController from './task.controller';
 import HTTP_CODES from '../../common/http_codes';
+import { authHook } from '../../common/authentification';
 
 const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
@@ -154,6 +155,8 @@ const deleteTaskOpts = {
  * @param done - Done cb function
  */
 const router: FastifyPluginCallback = (fastify, _, done) => {
+  fastify.addHook('onRequest', authHook);
+
   fastify.get('/boards/:boardId/tasks', getAllTasksOpts);
 
   fastify.get('/boards/:boardId/tasks/:taskId', getTaskByIdOpts);
