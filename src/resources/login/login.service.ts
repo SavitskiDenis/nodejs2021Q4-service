@@ -1,8 +1,7 @@
 import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
-import config from '../../common/config';
 import { LoginPayloadType } from './login.types';
 import userService from '../users/user.service';
+import { createToken } from '../../common/authentification';
 
 
 /**
@@ -18,7 +17,7 @@ const login = async (payload: LoginPayloadType): Promise<string | null> => {
     const match = await compare(payload.password, users[0].password);
 
     if (match) {
-      return sign({ id: users[0].id, login: users[0].login }, config.JWT_SECRET_KEY);
+      return createToken(users[0].id,  users[0].login);
     }
   }
 
