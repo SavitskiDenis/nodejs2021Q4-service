@@ -1,6 +1,7 @@
 import { FastifyPluginCallback } from 'fastify';
 import usersController from './user.controller';
 import HTTP_CODES from '../../common/http_codes';
+import { authHook } from '../../common/authentification';
 
 const { CODE_OK, CODE_CREATED, CODE_BAD_REQUEST, CODE_NOT_FOUND } = HTTP_CODES;
 
@@ -126,6 +127,8 @@ const deleteUserOpts = {
  * @param done - Done cb function
  */
 const router: FastifyPluginCallback = (fastify, _, done) => {
+  fastify.addHook('onRequest', authHook);
+
   fastify.get('/users', getAllUsersOpts);
 
   fastify.get('/users/:userId', getUserByIdOpts);

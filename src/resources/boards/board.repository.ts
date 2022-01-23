@@ -1,4 +1,3 @@
-import { getConnection } from 'typeorm';
 import Board from './board.entity';
 import Column from '../column/column.entity'
 import { BoardPayload } from './board.types'
@@ -8,7 +7,7 @@ import { BoardPayload } from './board.types'
  * 
  * @returns Array of boards
  */
-const getAll = (): Promise<Board[]> => getConnection().manager.find(Board, { relations: ["columns"] });
+const getAll = (): Promise<Board[]> => Board.find({ relations: ["columns"] });
 
 /**
  * Function for getting board by id
@@ -16,7 +15,7 @@ const getAll = (): Promise<Board[]> => getConnection().manager.find(Board, { rel
  * @param id - Board's uuid 
  * @returns Found board or undefined
  */
-const getById = (id: string): Promise<Board | undefined> => getConnection().manager.findOne(Board, id, { relations: ["columns"] });
+const getById = (id: string): Promise<Board | undefined> => Board.findOne(id, { relations: ["columns"] });
 
 /**
  * Function for create and add new board in db
@@ -25,13 +24,11 @@ const getById = (id: string): Promise<Board | undefined> => getConnection().mana
  * @returns Created board
  */
 const add = async (payload: BoardPayload): Promise<Board> => {
-  const connection = getConnection();
-  const board = await connection.manager.create(Board, payload);
-  await connection.manager.save(board);
+  const board = await Board.create(payload);
+  await board.save();
 
-  const columns = await Promise.all(payload.columns.map(el => connection.manager.create(Column, { ...el, board })));
-
-  await connection.manager.save(columns);
+  const columns = await Promise.all(payload.columns.map(el => Column.create({ ...el, board })));
+  await Promise.all(columns.map(el => el.save()));
 
   board.columns = columns;
 
@@ -46,14 +43,13 @@ const add = async (payload: BoardPayload): Promise<Board> => {
  * @returns Updated board or null
  */
 const update = async (id: string, payload: BoardPayload): Promise<Board | null> => {
-  const connection = getConnection();
-  const board = await connection.manager.findOne(Board, id);
+  const board = await Board.findOne(id);
 
   if (board) {
     board.title = payload.title;
-    await connection.manager.save(board);
+    await board.save();
 
-    const boardColumns = await connection.manager.find(Column, {
+    const boardColumns = await Column.find({
       where: {
         board
       }
@@ -65,7 +61,7 @@ const update = async (id: string, payload: BoardPayload): Promise<Board | null> 
         boardColumns[i].order = payload.columns[i].order;
       }
     }
-    await connection.manager.save(boardColumns);
+    await Promise.all(boardColumns.map(el => el.save()));
 
     board.columns = boardColumns;
 
@@ -82,11 +78,10 @@ const update = async (id: string, payload: BoardPayload): Promise<Board | null> 
  * @returns Deleted board or null
  */
 const _delete = async (id: string): Promise<Board | null> => {
-  const connection = getConnection();
-  const board = await connection.manager.findOne(Board, id);
+  const board = await Board.findOne(id);
 
   if (board) {
-    await connection.manager.remove(board);
+    await board.remove();
 
     return board;
   }

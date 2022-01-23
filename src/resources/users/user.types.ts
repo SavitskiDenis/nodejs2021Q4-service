@@ -4,5 +4,6 @@
 export type UserPayloadType = {
   name: string,
   login: string,
-  password: string
+  password: string,
+  salt: string | undefined;
 };

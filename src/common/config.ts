@@ -13,6 +13,7 @@ export default {
   LOGGER_TRANSLATE_TIME_FORMAT: 'yyyy-mm-dd HH:MM:ss',
   NODE_ENV: process.env.NODE_ENV,
   MONGO_CONNECTION_STRING: process.env.MONGO_CONNECTION_STRING,
-  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+  SALT_ROUNDS: process.env.SALT_ROUNDS ? Number.parseInt(process.env.SALT_ROUNDS, 10) : 10,
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ?? 'secret',
   AUTH_MODE: process.env.AUTH_MODE === 'true'
 };
