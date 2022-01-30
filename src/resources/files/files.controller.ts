@@ -4,7 +4,7 @@ import { createReadStream, existsSync } from 'fs';
 import { join } from 'path';
 import HTTP_CODES from '../../common/http_codes';
 
-@Controller('files')
+@Controller('file')
 @UseInterceptors(FileInterceptor('file', { dest: 'uploads/' }))
 export class FilesController {
   @Post('/')
