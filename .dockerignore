@@ -2,3 +2,5 @@ node_modules/
 logs/
 .github/
 .vscode/
+uploads/
+dist/
