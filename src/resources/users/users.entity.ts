@@ -1,6 +1,13 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn, OneToMany, BaseEntity } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  PrimaryColumn,
+  OneToMany,
+  BaseEntity,
+} from 'typeorm';
 import { v4 } from 'uuid';
-import Task from '../tasks/task.entity';
+import Task from '../tasks/tasks.entity';
 
 /**
  * User entity for db
@@ -22,11 +29,11 @@ class User extends BaseEntity {
   @Column()
   salt: string;
 
-  @OneToMany(() => Task, task => task.user)
+  @OneToMany(() => Task, (task) => task.user)
   tasks: Task[];
 
   @BeforeInsert()
-  createId () {
+  createId() {
     this.id = v4();
   }
 }
