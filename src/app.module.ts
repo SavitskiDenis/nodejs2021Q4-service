@@ -9,6 +9,7 @@ import { TasksModule } from './resources/tasks/tasks.module';
 import Task from './resources/tasks/tasks.entity';
 import { LoginModule } from './resources/login/login.module';
 import { RequestMiddleware } from './middlewares/RequestMidlware';
+import { FilesModule } from './resources/files/files.module';
 import config from './common/config';
 
 @Module({
@@ -29,6 +30,7 @@ import config from './common/config';
     BoardsModule,
     TasksModule,
     LoginModule,
+    FilesModule,
   ],
 })
 export class AppModule {
