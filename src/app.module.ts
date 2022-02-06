@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import Board from './resources/boards/boards.entity';
 import { BoardsModule } from './resources/boards/boards.module';
@@ -8,9 +8,11 @@ import { UsersModule } from './resources/users/users.module';
 import { TasksModule } from './resources/tasks/tasks.module';
 import Task from './resources/tasks/tasks.entity';
 import { LoginModule } from './resources/login/login.module';
-import { RequestMiddleware } from './middlewares/RequestMidlware';
-import { FilesModule } from './resources/files/files.module';
+import { ExpressRequestMiddleware } from './middlewares/express-request.middleware';
+import { FilesModule as FastifyFilesModule } from './resources/files/fastify/files.module';
+import { FilesModule as ExpressFilesModule } from './resources/files/express/files.module';
 import config from './common/config';
+import { FastifyRequestMiddleware } from './middlewares/fastify-request.middleware';
 
 @Module({
   imports: [
@@ -30,13 +32,13 @@ import config from './common/config';
     BoardsModule,
     TasksModule,
     LoginModule,
-    FilesModule,
+    config.USE_FASTIFY ? FastifyFilesModule : ExpressFilesModule,
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(RequestMiddleware)
-      .forRoutes('*')
+      .apply(config.USE_FASTIFY ? FastifyRequestMiddleware : ExpressRequestMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

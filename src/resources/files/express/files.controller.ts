@@ -3,9 +3,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { createReadStream, existsSync } from 'fs';
 import { diskStorage } from 'multer';
 import { join } from 'path';
-import config from '../../common/config';
-import { AuthGuard } from '../../common/authentification';
-import HTTP_CODES from '../../common/http_codes';
+import config from '../../../common/config';
+import { AuthGuard } from '../../../common/authentification';
+import HTTP_CODES from '../../../common/http_codes';
 
 @Controller('file')
 @UseGuards(AuthGuard)

@@ -1,12 +1,12 @@
 import { WinstonModule } from 'nest-winston';
-import { level, transports, format } from 'winston';
+import { transports, format } from 'winston';
 import config from './config';
 
 const { combine, timestamp, printf } = format;
 
 const { LOG_LEVEL, LOGS_DIR_PATH } = config;
 
-const levelsByIndex = new Map<number, level>([
+const levelsByIndex = new Map<number, string>([
   [0, 'error'],
   [1, 'warn'],
   [2, 'info'],
