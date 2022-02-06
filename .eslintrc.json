@@ -42,12 +42,17 @@
     "linebreak-style": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "no-underscore-dangle": "off",
+    "no-useless-constructor": "off",
+    "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "node/no-missing-require": ["error", {
       "allowModules": ["electron"],
       "resolvePaths": ["/node_modules"],
       "tryExtensions": [".js", ".json", ".node",".ts",".cjs"]
-    }]
+    }],
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
