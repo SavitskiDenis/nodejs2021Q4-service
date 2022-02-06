@@ -1,6 +1,8 @@
 import { WinstonModule } from 'nest-winston';
-import { level, transports } from 'winston';
+import { level, transports, format } from 'winston';
 import config from './config';
+
+const { combine, timestamp, printf } = format;
 
 const { LOG_LEVEL, LOGS_DIR_PATH } = config;
 
@@ -14,7 +16,13 @@ const levelsByIndex = new Map<number, level>([
   [6, 'silly']
 ]);
 
+const logFormat = printf(({ level: levelInfo, message, timestamp: time }) => (`${time} [${levelInfo}] ${message}`));
+
 const logger = WinstonModule.createLogger({
+  format: combine(
+    timestamp(),
+    logFormat
+  ),
   level: levelsByIndex.get(parseInt(LOG_LEVEL, 10)) ?? 'debug',
   transports: [
     new transports.File({
