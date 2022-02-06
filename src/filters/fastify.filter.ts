@@ -8,7 +8,7 @@ export class FastifyExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest();
     const status = exception.getStatus();
 
-    response.send({
+    response.code(status).send({
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
