@@ -23,5 +23,6 @@ export default {
   TYPEORM_DATABASE: process.env.TYPEORM_DATABASE,
   TYPEORM_USERNAME: process.env.TYPEORM_USERNAME,
   TYPEORM_PASSWORD: process.env.TYPEORM_PASSWORD,
-  TYPEORM_SYNCHRONIZE: process.env.TYPEORM_SYNCHRONIZE === 'true'
+  TYPEORM_SYNCHRONIZE: process.env.TYPEORM_SYNCHRONIZE === 'true',
+  UPLOADS_PATH: process.env.UPLOADS_PATH ?? 'uploads/'
 };
