@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import Column_ from '../columns/columns.entity';
 import User from '../users/users.entity';
 import { TaskDTO } from './tasks.dto';
@@ -7,6 +9,15 @@ import { TaskResponse } from './tasks.types';
 
 @Injectable()
 export class TasksService {
+  constructor(
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>,
+    @InjectRepository(Column_)
+    private columnsRepository: Repository<Column_>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
+
   /**
    * Function for map entity object to model
    *
@@ -32,7 +43,7 @@ export class TasksService {
    * @returns Found array of tasks or undefined
    */
   getAll = async (boardId: string): Promise<TaskResponse[] | undefined> => {
-    const result = await Task.find({
+    const result = await this.tasksRepository.find({
       where: { board: { id: boardId } },
       relations: ['board', 'column', 'user'],
     });
@@ -51,7 +62,7 @@ export class TasksService {
     id: string,
     boardId: string
   ): Promise<TaskResponse | undefined> => {
-    const result = await Task.findOne({
+    const result = await this.tasksRepository.findOne({
       where: { id, board: { id: boardId } },
       relations: ['board', 'column', 'user'],
     });
@@ -70,7 +81,7 @@ export class TasksService {
     boardId: string,
     payload: TaskDTO
   ): Promise<TaskResponse> => {
-    const task = await Task.create({
+    const task = await this.tasksRepository.create({
       title: payload.title,
       order: payload.order,
       description: payload.description,
@@ -79,7 +90,7 @@ export class TasksService {
       column:
         typeof payload.columnId === 'string' ? { id: payload.columnId } : null,
     });
-    await task.save();
+    await this.tasksRepository.save(task);
 
     return this.mapEntityToResponse(task);
   };
@@ -97,7 +108,7 @@ export class TasksService {
     boardId: string,
     payload: TaskDTO
   ): Promise<TaskResponse | null> => {
-    const task = await Task.findOne({
+    const task = await this.tasksRepository.findOne({
       where: { id, board: { id: boardId } },
       relations: ['board', 'column', 'user'],
     });
@@ -105,12 +116,12 @@ export class TasksService {
     if (task) {
       let column = null;
       if (typeof payload.columnId === 'string') {
-        column = await Column_.findOneOrFail(payload.columnId);
+        column = await this.columnsRepository.findOneOrFail(payload.columnId);
       }
 
       let user = null;
       if (typeof payload.userId === 'string') {
-        user = await User.findOneOrFail(payload.userId);
+        user = await this.usersRepository.findOneOrFail(payload.userId);
       }
 
       task.title = payload.title;
@@ -119,7 +130,7 @@ export class TasksService {
       task.user = user;
       task.column = column;
 
-      await task.save();
+      await this.tasksRepository.save(task);
       return this.mapEntityToResponse(task);
     }
 
@@ -137,13 +148,13 @@ export class TasksService {
     id: string,
     boardId: string
   ): Promise<TaskResponse | null> => {
-    const task = await Task.findOne({
+    const task = await this.tasksRepository.findOne({
       where: { id, board: { id: boardId } },
       relations: ['board', 'column', 'user'],
     });
 
     if (task) {
-      await task.remove();
+      await this.tasksRepository.remove(task);
 
       return this.mapEntityToResponse(task);
     }

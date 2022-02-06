@@ -3,8 +3,7 @@ import {
   Column,
   Entity,
   PrimaryColumn,
-  OneToMany,
-  BaseEntity,
+  OneToMany
 } from 'typeorm';
 import { v4 } from 'uuid';
 import Task from '../tasks/tasks.entity';
@@ -13,7 +12,7 @@ import Task from '../tasks/tasks.entity';
  * User entity for db
  */
 @Entity('users')
-class User extends BaseEntity {
+class User {
   @PrimaryColumn()
   id: string;
 

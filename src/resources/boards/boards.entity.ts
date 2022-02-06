@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   BeforeInsert,
   Column,
   Entity,
@@ -14,7 +13,7 @@ import Column_ from '../columns/columns.entity';
  * Board entity for db
  */
 @Entity('boards')
-class Board extends BaseEntity {
+class Board {
   @PrimaryColumn()
   id: string;
 

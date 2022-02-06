@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { genSalt, hash } from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UserResponse } from './users.types';
 import User from './users.entity';
 import { UserDTO } from './users.dto';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>
+  ) {}
+
   private mapEntityToResponse = (entity: User): UserResponse => ({
     id: entity.id,
     login: entity.login,
@@ -18,7 +25,7 @@ export class UsersService {
    * @returns Array of users
    */
   getAll = async (): Promise<UserResponse[]> => {
-    const users = await User.find();
+    const users = await this.usersRepository.find();
 
     return users.map((el) => this.mapEntityToResponse(el));
   };
@@ -30,7 +37,7 @@ export class UsersService {
    * @returns Found user or undefined
    */
   getById = async (id: string): Promise<UserResponse | undefined> => {
-    const user = await User.findOne(id);
+    const user = await this.usersRepository.findOne(id);
 
     return user ? this.mapEntityToResponse(user) : undefined;
   };
@@ -42,7 +49,7 @@ export class UsersService {
    * @returns Found users or undefined
    */
   getByLogin = (login: string): Promise<User[] | undefined> =>
-    User.find({ where: { login } });
+    this.usersRepository.find({ where: { login } });
 
   /**
    * Function for add new user in db and get it
@@ -54,8 +61,8 @@ export class UsersService {
     const salt = await genSalt(5);
     const password = await hash(payload.password, salt);
 
-    const user = await User.create({ ...payload, salt, password });
-    await user.save();
+    const user = await this.usersRepository.create({ ...payload, salt, password });
+    await this.usersRepository.save(user);
 
     return this.mapEntityToResponse(user);
   };
@@ -71,7 +78,7 @@ export class UsersService {
     id: string,
     payload: UserDTO
   ): Promise<UserResponse | null> => {
-    const user = await User.findOne(id);
+    const user = await this.usersRepository.findOne(id);
 
     if (user) {
       const salt = await genSalt(5);
@@ -82,7 +89,7 @@ export class UsersService {
       user.password = password;
       user.salt = salt;
 
-      await user.save();
+      await this.usersRepository.save(user);
 
       return this.mapEntityToResponse(user);
     }
@@ -97,10 +104,10 @@ export class UsersService {
    * @returns Deleted user
    */
   deleteUser = async (id: string): Promise<UserResponse | null> => {
-    const user = await User.findOne(id);
+    const user = await this.usersRepository.findOne(id);
 
     if (user) {
-      await user.remove();
+      await this.usersRepository.remove(user);
 
       return this.mapEntityToResponse(user);
     }

@@ -4,8 +4,7 @@ import {
   BeforeInsert,
   ManyToOne,
   PrimaryColumn,
-  JoinColumn,
-  BaseEntity,
+  JoinColumn
 } from 'typeorm';
 import { v4 } from 'uuid';
 import User from '../users/users.entity';
@@ -16,7 +15,7 @@ import Column_ from '../columns/columns.entity';
  * Task entity for db
  */
 @Entity('tasks')
-class Task extends BaseEntity {
+class Task {
   @PrimaryColumn()
   id: string;
 

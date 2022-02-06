@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import Column_ from '../columns/columns.entity';
 import { BoardDTO } from './board.dto';
 import Board from './boards.entity';
@@ -7,6 +9,13 @@ import { BoardResponse } from './boards.types';
 
 @Injectable()
 export class BoardsService {
+  constructor(
+    @InjectRepository(Board)
+    private boardsRepository: Repository<Board>,
+    @InjectRepository(Column_)
+    private columnsRepository: Repository<Column_>,
+  ) {}
+
   private sortColumns(columns: Column_[]): void {
     columns.sort((a, b) => a.order - b.order);
   }
@@ -27,7 +36,7 @@ export class BoardsService {
    * @returns Array of boards
    */
   getAll = async (): Promise<BoardResponse[]> => {
-    const boards = await Board.find({ relations: ['columns'] });
+    const boards = await this.boardsRepository.find({ relations: ['columns'] });
 
     boards.forEach((board) => this.sortColumns(board.columns));
 
@@ -41,7 +50,7 @@ export class BoardsService {
    * @returns Founded board or undefined
    */
   getById = async (id: string): Promise<BoardResponse | undefined> => {
-    const board = await Board.findOne(id, { relations: ['columns'] });
+    const board = await this.boardsRepository.findOne(id, { relations: ['columns'] });
 
     if (board) {
       this.sortColumns(board.columns);
@@ -59,13 +68,13 @@ export class BoardsService {
    * @returns Created board
    */
   addBoard = async (payload: BoardDTO): Promise<BoardResponse> => {
-    const board = await Board.create(payload);
-    await board.save();
+    const board = await this.boardsRepository.create(payload);
+    await this.boardsRepository.save(board);
 
     const columns = await Promise.all(
-      payload.columns.map((el) => Column_.create({ ...el, board }))
+      payload.columns.map((el) => this.columnsRepository.create({ ...el, board }))
     );
-    await Promise.all(columns.map((el) => el.save()));
+    await Promise.all(columns.map((el) => this.columnsRepository.save(el)));
     // this.sortColumns(columns);
 
     board.columns = columns;
@@ -84,13 +93,13 @@ export class BoardsService {
     id: string,
     payload: BoardDTO
   ): Promise<BoardResponse | null> => {
-    const board = await Board.findOne(id);
+    const board = await this.boardsRepository.findOne(id);
 
     if (board) {
       board.title = payload.title;
-      await board.save();
+      await this.boardsRepository.save(board);
 
-      const boardColumns = await Column_.find({
+      const boardColumns = await this.columnsRepository.find({
         where: {
           board,
         },
@@ -102,7 +111,7 @@ export class BoardsService {
           boardColumns[i].order = payload.columns[i].order;
         }
       }
-      await Promise.all(boardColumns.map((el) => el.save()));
+      await Promise.all(boardColumns.map((el) => this.columnsRepository.save(el)));
       this.sortColumns(boardColumns);
 
       board.columns = boardColumns;
@@ -120,10 +129,10 @@ export class BoardsService {
    * @returns Deleted board or null
    */
   deleteBoard = async (id: string): Promise<Board | null> => {
-    const board = await Board.findOne(id);
+    const board = await this.boardsRepository.findOne(id);
 
     if (board) {
-      await board.remove();
+      await this.boardsRepository.remove(board);
 
       return board;
     }
