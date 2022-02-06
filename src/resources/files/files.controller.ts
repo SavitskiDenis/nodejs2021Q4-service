@@ -28,7 +28,7 @@ export class FilesController {
   @Get('/:fileName')
   @HttpCode(200)
   getFileByName(@Param('fileName') fileName: string) {
-    const filePath = join('uploads/', fileName);
+    const filePath = join(config.UPLOADS_PATH, fileName);
     if (!existsSync(filePath)) {
       throw new NotFoundException(`Not found file ${fileName}`);
     }
